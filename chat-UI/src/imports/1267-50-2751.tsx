@@ -1569,14 +1569,6 @@ export default function Component24() {
         isVisible={isVisible1}
         setIsVisible={setIsVisible1}
       />
-      <DynamicCardNew
-        swipeX={swipeX2}
-        setSwipeX={setSwipeX2}
-        hasSwipedOut={hasSwipedOut2}
-        setHasSwipedOut={setHasSwipedOut2}
-        isVisible={isVisible2}
-        setIsVisible={setIsVisible2}
-      />
       <div className="absolute backdrop-blur-[32.979px] bg-[rgba(0,0,0,0.64)] bottom-[-23px] content-stretch flex h-[80px] items-start justify-between left-0 overflow-clip pt-[8px] px-[15px] w-[392px]" data-name="底Tab">
         <div className="content-stretch flex flex-col gap-[2px] items-center px-[11px] relative shrink-0 w-[66px]" data-name="车辆">
           <Frame24 />
