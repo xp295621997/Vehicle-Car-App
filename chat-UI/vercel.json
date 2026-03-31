@@ -1,9 +1,5 @@
 {
-  "name": "chatbox",
-  "builds": [
-    { "src": "dist/**/*", "use": "@vercel/static" }
-  ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/dist/index.html" }
+    { "source": "/api/(.*)", "destination": "/api/$1" }
   ]
 }
