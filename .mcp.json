@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "MiniMax": {
+      "command": "uvx",
+      "args": [
+        "minimax-coding-plan-mcp"
+      ],
+      "env": {
+        "MINIMAX_API_KEY": "sk-cp-BZ4zKCQCkeKCu9SdhItjlNAv6KGBAh_BpuZM9EK9H9KJJ7aekei6HVBPr5lWJwaxf2upVayoA0ELAUhFr8pfS0CttjEAmBYYb96254l-zQbaMRxuXHeAB_w",
+        "MINIMAX_MCP_BASE_PATH": "/Users/mi/Desktop/Claude Code/Chatbox",
+        "MINIMAX_API_HOST": "https://api.minimaxi.com",
+        "MINIMAX_API_RESOURCE_MODE": "local"
+      }
+    }
+  },
+  "env": {
+    "AMAP_WEBSERVICE_KEY": "759e00b907a4995064447c8136c32419"
+  }
+}

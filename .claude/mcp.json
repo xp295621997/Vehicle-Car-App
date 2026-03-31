@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "mcp-figma": {
+      "command": "npx",
+      "args": ["-y", "mcp-figma"]
+    }
+  }
+}
