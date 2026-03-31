@@ -1,6 +1,0 @@
-{
-  "name": "Vehicle-Car-App",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
-}

@@ -1,5 +1,0 @@
-{
-  "query": "帮我哨兵模式",
-  "timestamp": 1773229833413,
-  "status": "pending"
-}

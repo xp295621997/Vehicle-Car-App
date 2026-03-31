@@ -1,0 +1,6 @@
+{
+  "name": "chatbox",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

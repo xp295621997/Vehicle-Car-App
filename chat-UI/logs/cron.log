@@ -1,0 +1,13 @@
+/bin/sh: node: command not found
+📝 生成 3月23日 每日总结...
+📁 从 conversations JSON 读取到 6 条对话
+📊 今日对话: 6条
+✅ 总结已生成: /Users/mi/Desktop/Claude Code/Chatbox/chat UI/docs/每日总结/2026-03-23.md
+📝 生成 3月25日 每日总结...
+📁 从 realtime.log 解析到 0 条对话
+📊 今日对话: 0条
+✅ 总结已生成: /Users/mi/Desktop/Claude Code/Chatbox/chat UI/docs/每日总结/2026-03-25.md
+📝 生成 3月30日 每日总结...
+📁 从 conversations JSON 读取到 4 条对话
+📊 今日对话: 4条
+✅ 总结已生成: /Users/mi/Desktop/Claude Code/Chatbox/chat UI/docs/每日总结/2026-03-30.md
