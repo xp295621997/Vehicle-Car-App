@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>场景引擎控制台</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container { max-width: 800px; margin: 0 auto; }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #333;
+    }
+    h1 { font-size: 24px; display: flex; align-items: center; gap: 10px; }
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: #1a1a1a;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: #3b82f6; color: white; }
+    .btn-primary:hover { background: #2563eb; }
+    .btn-secondary { background: #374151; color: white; }
+    .btn-secondary:hover { background: #4b5563; }
+
+    .section { margin-bottom: 30px; }
+    .section-title {
+      font-size: 16px;
+      color: #9ca3af;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .scenario-card {
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 12px;
+      border: 1px solid #2a2a2a;
+      transition: border-color 0.2s;
+    }
+    .scenario-card:hover { border-color: #3b82f6; }
+
+    .time-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #2563eb;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .scenario-name {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .scenario-desc {
+      color: #9ca3af;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .vehicle-state {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .state-item {
+      background: #252525;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .state-label { font-size: 11px; color: #6b7280; margin-bottom: 4px; }
+    .state-value { font-size: 16px; font-weight: 600; }
+    .state-value.good { color: #4ade80; }
+    .state-value.warning { color: #fbbf24; }
+    .state-value.danger { color: #ef4444; }
+
+    .alert-box {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      padding: 12px;
+      color: #dc2626;
+      font-size: 14px;
+    }
+    .alert-box.warning {
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #d97706;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+    .stat-card {
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .stat-value { font-size: 28px; font-weight: 700; color: #3b82f6; }
+    .stat-label { font-size: 12px; color: #6b7280; margin-top: 5px; }
+
+    .time-group {
+      margin-bottom: 25px;
+    }
+    .time-group-title {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 12px;
+      padding-left: 10px;
+      border-left: 3px solid #3b82f6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🚗 场景引擎</h1>
+      <div class="status">
+        <span class="status-dot"></span>
+        <span>运行中</span>
+      </div>
+    </header>
+
+    <div class="actions">
+      <button class="btn-primary" onclick="triggerScenario()">🔄 手动触发</button>
+      <button class="btn-secondary" onclick="refreshStats()">📊 刷新统计</button>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📈 统计</div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="totalScenarios">-</div>
+          <div class="stat-label">场景总数</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="totalAlerts">-</div>
+          <div class="stat-label">提醒次数</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="uptime">-</div>
+          <div class="stat-label">运行时长</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">🛤️ 当前场景</div>
+      <div id="currentScenario">
+        <div class="scenario-card">
+          <div style="text-align: center; color: #6b7280;">加载中...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📋 最近提醒</div>
+      <div id="recentAlerts">
+        <div class="scenario-card">
+          <div style="text-align: center; color: #6b7280;">暂无提醒</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function formatTime(seconds) {
+      const h = Math.floor(seconds / 3600);
+      const m = Math.floor((seconds % 3600) / 60);
+      return h > 0 ? `${h}小时${m}分钟` : `${m}分钟`;
+    }
+
+    function getBatteryClass(val) {
+      if (val < 20) return 'danger';
+      if (val < 40) return 'warning';
+      return 'good';
+    }
+
+    function getTireClass(val) {
+      if (val < 2.3) return 'danger';
+      if (val < 2.6) return 'warning';
+      return 'good';
+    }
+
+    function renderScenario(data) {
+      const { scenario, simulatedTime, description, vehicleState, alerts } = data;
+
+      return `
+        <div class="scenario-card">
+          <span class="time-badge">${simulatedTime}</span>
+          <div class="scenario-name">${scenario.name}</div>
+          <div class="scenario-desc">${scenario.description}</div>
+
+          <div class="vehicle-state">
+            <div class="state-item">
+              <div class="state-label">电量</div>
+              <div class="state-value ${getBatteryClass(vehicleState.batteryPercent)}">${vehicleState.batteryPercent}%</div>
+            </div>
+            <div class="state-item">
+              <div class="state-label">续航</div>
+              <div class="state-value">${vehicleState.range}km</div>
+            </div>
+            <div class="state-item">
+              <div class="state-label">车门</div>
+              <div class="state-value ${vehicleState.locked ? 'good' : 'warning'}">${vehicleState.locked ? '已锁' : '未锁'}</div>
+            </div>
+            <div class="state-item">
+              <div class="state-label">充电</div>
+              <div class="state-value ${vehicleState.isCharging ? 'good' : ''}">${vehicleState.isCharging ? '充电中' : '未充电'}</div>
+            </div>
+          </div>
+
+          <div class="vehicle-state">
+            <div class="state-item">
+              <div class="state-label">左前轮</div>
+              <div class="state-value ${getTireClass(vehicleState.tirePressure.fl)}">${vehicleState.tirePressure.fl.toFixed(1)}</div>
+            </div>
+            <div class="state-item">
+              <div class="state-label">右前轮</div>
+              <div class="state-value ${getTireClass(vehicleState.tirePressure.fr)}">${vehicleState.tirePressure.fr.toFixed(1)}</div>
+            </div>
+            <div class="state-item">
+              <div class="state-label">左后轮</div>
+              <div class="state-value ${getTireClass(vehicleState.tirePressure.rl)}">${vehicleState.tirePressure.rl.toFixed(1)}</div>
+            </div>
+            <div class="state-item">
+              <div class="state-label">右后轮</div>
+              <div class="state-value ${getTireClass(vehicleState.tirePressure.rr)}">${vehicleState.tirePressure.rr.toFixed(1)}</div>
+            </div>
+          </div>
+
+          ${alerts && alerts.length > 0 ? `
+            <div class="alert-box ${alerts[0].type.includes('low') ? 'warning' : ''}">
+              ⚠️ ${alerts.map(a => a.message).join(', ')}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function renderAlerts(alerts) {
+      if (!alerts || alerts.length === 0) {
+        return `<div class="scenario-card"><div style="text-align: center; color: #6b7280;">暂无提醒</div></div>`;
+      }
+
+      return alerts.map(alert => `
+        <div class="scenario-card">
+          <div class="time-badge">${new Date(alert.time).toLocaleTimeString()}</div>
+          <div class="scenario-name">${alert.scenario}</div>
+          <div class="alert-box warning">
+            ${alert.alerts.map(a => a.message).join(', ')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function triggerScenario() {
+      const btn = document.querySelector('.btn-primary');
+      btn.disabled = true;
+      btn.textContent = '触发中...';
+
+      try {
+        const res = await fetch('/api/trigger');
+        const data = await res.json();
+
+        if (data.success) {
+          document.getElementById('currentScenario').innerHTML = renderScenario(data.details);
+        }
+        refreshStats();
+      } catch (e) {
+        alert('请求失败: ' + e.message);
+      }
+
+      btn.disabled = false;
+      btn.textContent = '🔄 手动触发';
+    }
+
+    async function refreshStats() {
+      try {
+        const [statusRes, statsRes] = await Promise.all([
+          fetch('/api/status'),
+          fetch('/api/stats')
+        ]);
+
+        const status = await statusRes.json();
+        const stats = await statsRes.json();
+
+        document.getElementById('totalScenarios').textContent = stats.simulationCount || 0;
+        document.getElementById('totalAlerts').textContent = stats.recentAlerts?.length || 0;
+        document.getElementById('uptime').textContent = formatTime(status.uptime);
+
+        if (stats.recentAlerts) {
+          document.getElementById('recentAlerts').innerHTML = renderAlerts(stats.recentAlerts);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function loadCurrentScenario() {
+      try {
+        const res = await fetch('/api/scenario');
+        const data = await res.json();
+
+        if (data.success) {
+          document.getElementById('currentScenario').innerHTML = renderScenario(data.data);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // 初始化
+    loadCurrentScenario();
+    refreshStats();
+
+    // 每10秒刷新
+    setInterval(refreshStats, 10000);
+  </script>
+</body>
+</html>

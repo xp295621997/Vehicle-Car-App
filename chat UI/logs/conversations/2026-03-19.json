@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1,
+    "timestamp": "2026-03-19T02:56:13.646Z",
+    "userQuery": "打开空调",
+    "assistantResponse": "好的，已为您打开空调",
+    "action": "空调 已开启"
+  },
+  {
+    "id": 2,
+    "timestamp": "2026-03-19T02:56:27.537Z",
+    "userQuery": "关闭空调",
+    "assistantResponse": "好的，已为您打开空调",
+    "action": "空调 已开启"
+  },
+  {
+    "id": 3,
+    "timestamp": "2026-03-19T02:56:33.029Z",
+    "userQuery": "把空调关掉",
+    "assistantResponse": "抱歉，我暂时无法理解您的指令。您可以试试说\"打开空调\"、\"锁车\"、\"续航还有多少\"等",
+    "action": "无法识别"
+  },
+  {
+    "id": 4,
+    "timestamp": "2026-03-19T02:56:38.070Z",
+    "userQuery": "空调关闭",
+    "assistantResponse": "好的，已为您关闭空调",
+    "action": "空调 已关闭"
+  },
+  {
+    "id": 5,
+    "timestamp": "2026-03-19T03:16:57.288Z",
+    "userQuery": "帮我打开空调",
+    "assistantResponse": "好的，已为您打开空调",
+    "action": "空调 已开启"
+  },
+  {
+    "id": 6,
+    "timestamp": "2026-03-19T03:17:06.497Z",
+    "userQuery": "关闭空调",
+    "assistantResponse": "好的，已为您打开空调",
+    "action": "空调 已开启"
+  },
+  {
+    "id": 7,
+    "timestamp": "2026-03-19T03:17:10.507Z",
+    "userQuery": "空调关闭",
+    "assistantResponse": "好的，已为您关闭空调",
+    "action": "空调 已关闭"
+  }
+]
