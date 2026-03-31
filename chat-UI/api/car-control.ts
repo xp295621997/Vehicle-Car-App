@@ -1,4 +1,4 @@
-// 车辆控制 API
+// 车辆控制 API - TSP车控接口代理
 const TSP_API = 'https://preview.tsp-mock.sc.iccc.mioffice.cn/test/dds-noauth';
 
 export async function POST(req: Request) {
@@ -11,7 +11,8 @@ export async function POST(req: Request) {
     });
     const data = await response.json();
     return Response.json(data);
-  } catch (error) {
-    return Response.json({ error: 'Car control failed' }, { status: 500 });
+  } catch (error: any) {
+    console.error('[Car API] Error:', error);
+    return Response.json({ error: error.message }, { status: 500 });
   }
 }

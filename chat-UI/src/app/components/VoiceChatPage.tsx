@@ -897,7 +897,7 @@ export function VoiceChatPage({ onClose, setAddMessage }: VoiceChatPageProps) {
 
     const checkScenarioAlerts = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/alerts?since=' + encodeURIComponent(lastFetchTimeRef.current));
+        const response = await fetch('/api/alerts?since=' + encodeURIComponent(lastFetchTimeRef.current));
         if (!response.ok) return;
 
         const data = await response.json();
@@ -962,7 +962,7 @@ export function VoiceChatPage({ onClose, setAddMessage }: VoiceChatPageProps) {
           });
 
           // 确认收到提醒
-          await fetch('http://localhost:3001/api/ack', { method: 'POST' });
+          await fetch('/api/ack', { method: 'POST' });
         }
 
         // 更新最后获取时间
