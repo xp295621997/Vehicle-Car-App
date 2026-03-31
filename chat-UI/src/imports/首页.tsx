@@ -411,7 +411,6 @@ function Component12() {
 function Frame49() {
   return (
     <div className="content-stretch flex gap-[8px] items-center relative shrink-0">
-      <Component10 />
       <Component12 />
     </div>
   );
