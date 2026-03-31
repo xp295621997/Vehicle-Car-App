@@ -1,6 +1,9 @@
-// 图片理解 API - MiniMax
-// 支持 imageData (base64) 和 imageUrl 两种格式
-const MINIMAX_API_KEY = 'sk-cp-BZ4zKCQCkeKCu9SdhItjlNAv6KGBAh_BpuZM9EK9H9KJJ7aekei6HVBPr5lWJwaxf2upVayoA0ELAUhFr8pfS0CttjEAmBYYb96254l-zQbaMRxuXHeAB_w';
+// 图片理解 API
+// 注意: MiniMax API Key 不支持视觉模型，需要配置支持视觉的 API
+// 可选方案:
+// 1. MiniMax 开通视觉模型权限
+// 2. 使用 OpenAI GPT-4 Vision
+// 3. 使用阿里云视觉智能
 
 export async function POST(req: Request) {
   try {
@@ -10,58 +13,19 @@ export async function POST(req: Request) {
       return Response.json({ error: 'Missing imageData or imageUrl' }, { status: 400 });
     }
 
-    // 使用 MiniMax 对话API进行图片理解
-    const messages: any[] = [
-      {
-        role: 'user',
-        content: [
-          {
-            type: 'text',
-            text: prompt || '请详细描述这张图片的内容'
-          }
-        ]
-      }
-    ];
+    const textPrompt = prompt || '请详细描述这张图片的内容';
 
-    // 添加图片
-    if (imageData) {
-      // 支持 base64 格式的图片数据
-      messages[0].content.unshift({
-        type: 'image_url',
-        image_url: { url: `data:image/jpeg;base64,${imageData}` }
-      });
-    } else if (imageUrl) {
-      messages[0].content.unshift({
-        type: 'image_url',
-        image_url: { url: imageUrl }
-      });
-    }
-
-    const response = await fetch('https://api.minimaxi.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${MINIMAX_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: 'abab6.5s-chat',
-        messages,
-        temperature: 0.7,
-      }),
+    // MiniMax 视觉 API (如果 API Key 有权限)
+    // 由于当前 API Key 不支持视觉模型，返回友好提示
+    return Response.json({
+      description: '图片理解服务需要配置视觉模型权限。当前 MiniMax API Key 仅支持 TTS 和图片生成。如需启用图片理解，请联系管理员配置具有视觉模型权限的 API Key。',
+      hint: '需要配置 MiniMax 视觉模型或使用 OpenAI GPT-4 Vision API'
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('[Understand Image API] MiniMax error:', errorText);
-      return Response.json({ error: `MiniMax API error: ${response.status}` }, { status: response.status });
-    }
-
-    const data = await response.json();
-    const description = data.choices?.[0]?.message?.content || '图片理解服务暂时无法使用';
-
-    return Response.json({ description });
   } catch (error: any) {
     console.error('[Understand Image API] Error:', error);
-    return Response.json({ error: error.message }, { status: 500 });
+    return Response.json({
+      description: `图片理解服务暂时无法使用: ${error.message}`
+    }, { status: 200 });
   }
 }
